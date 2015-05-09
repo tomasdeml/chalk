@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8D6AA4A2-BA53-4720-B48A-06B04C986460}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chalk</RootNamespace>
+    <AssemblyName>Chalk</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PowerArgs, Version=2.6.0.1, Culture=neutral, PublicKeyToken=26a276264bbd55b8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PowerArgs.2.6.0.1\lib\net40\PowerArgs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ProcessRunner, Version=1.0.4.18316, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ProcessRunner.1.0.8\lib\net40\ProcessRunner.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Seterlund.CodeGuard, Version=2.3.4.1324, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Seterlund.CodeGuard.2.3.4\lib\net40\Seterlund.CodeGuard.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Abstractions, Version=2.0.0.115, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IO.Abstractions.2.0.0.115\lib\net40\System.IO.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YAXLib, Version=2.13.0.0, Culture=neutral, PublicKeyToken=7cc39f8266ad1835, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\YAXLib.2.13\lib\YAXLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interop\CommandLineArgumentStyle.cs" />
+    <Compile Include="Logging\ConsoleLoggerWithProgressIndicator.cs" />
+    <Compile Include="GitImport\Interop\CommandLineClientFacade.cs" />
+    <Compile Include="GitImport\Interop\IGitFacade.cs" />
+    <Compile Include="GitImport\Interop\IRepository.cs" />
+    <Compile Include="GitImport\Interop\CommandLineClientBasedRepository.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Progress.cs" />
+    <Compile Include="Interop\PrimaryArgument.cs" />
+    <Compile Include="VaultExport\Interop\CommandLineClientArgument.cs" />
+    <Compile Include="Interop\IFormattableArgument.cs" />
+    <Compile Include="VaultExport\Interop\VaultFacade.cs" />
+    <Compile Include="Interop\NamedArgument.cs" />
+    <Compile Include="Interop\SwitchArgument.cs" />
+    <Compile Include="VaultExport\Interop\VersionSnapshot.cs" />
+    <Compile Include="VaultExport\PrepareWorkspaceAction.cs" />
+    <Compile Include="VaultExport\DirectoryCleaner.cs" />
+    <Compile Include="Actions\TimedAction.cs" />
+    <Compile Include="VaultExport\Interop\RepositoryDeletionHistory.cs" />
+    <Compile Include="VaultExport\ILastVersionMarker.cs" />
+    <Compile Include="VaultExport\FilePersistedLastVersionMarker.cs" />
+    <Compile Include="VaultExport\WriteNoVersionMarkerAction.cs" />
+    <Compile Include="Actions\Parameters.cs" />
+    <Compile Include="Actions\ActionContext.cs" />
+    <Compile Include="GitImport\GitInitializeLocalRepositoryAction.cs" />
+    <Compile Include="GitImport\Interop\CommandLineClient.cs" />
+    <Compile Include="Actions\ActionComposer.cs" />
+    <Compile Include="Actions\ActionKind.cs" />
+    <Compile Include="GitImport\GitCommitFilesAction.cs" />
+    <Compile Include="Interop\ProcessExtensions.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VaultExport\VaultExportAction.cs" />
+    <Compile Include="VaultExport\Interop\IVaultClient.cs" />
+    <Compile Include="VaultExport\Interop\CommandLineClient.cs" />
+    <Compile Include="VaultExport\Interop\CommandLineClientResult.cs" />
+    <Compile Include="VaultExport\Interop\VaultException.cs" />
+    <Compile Include="VaultExport\Interop\VersionHistory.cs" />
+    <Compile Include="VaultExport\Interop\VersionHistoryItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
