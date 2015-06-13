@@ -42,15 +42,14 @@ namespace Chalk.VaultExport
             foreach (var exportStep in GetExportSteps(historyItems, beginVersion, endVersion))
             {
                 var startTime = DateTime.Now;
-                context.Logger.LogInfo(exportStep.Progress, "Processing version {0}...",
-                    exportStep.HistoryItem.Version.ToString());
+                context.Logger.LogInfo(exportStep.Progress, "Processing version {0}...", exportStep.Version.ToString());
 
                 if (exportStep.NeedsCleanWorkspace)
                     CleanWorkspace();
 
-                DownloadFilesAtVersion(exportStep.HistoryItem.Version);
+                DownloadFilesAtVersion(exportStep.Version);
                 versionDownloadedSubAction(exportStep.HistoryItem);
-                lastVersionMarker.Mark(exportStep.HistoryItem.Version);
+                lastVersionMarker.Mark(exportStep.Version);
 
                 context.Logger.LogInfo("Done, took {0}s", Math.Ceiling((DateTime.Now - startTime).TotalSeconds));
             }
@@ -111,6 +110,7 @@ namespace Chalk.VaultExport
 
         struct VersionExportStep
         {
+            public int Version { get { return HistoryItem.Version; } }
             public VersionHistoryItem HistoryItem { get; private set; }
             public bool NeedsCleanWorkspace { get; private set; }
             public Progress Progress { get; private set; }
