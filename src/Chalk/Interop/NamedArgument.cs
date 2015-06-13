@@ -18,8 +18,18 @@ namespace Chalk.Interop
         public virtual IEnumerable<string> FormatCommandLine(string prefix, CommandLineArgumentStyle argumentStyle)
         {
             return argumentStyle == CommandLineArgumentStyle.SingleWithEqualsSignDelimiter
-                ? new[] {string.Format("{0}{1}={2}", prefix, Name, Value)}
-                : new[] {prefix + Name, Value};
+                ? FormatSingleCommandLineWithEqualsDelimiter(prefix)
+                : FormatSeparatedCommandLine(prefix);
+        }
+
+        string[] FormatSeparatedCommandLine(string prefix)
+        {
+            return new[] {prefix + Name, Value};
+        }
+
+        string[] FormatSingleCommandLineWithEqualsDelimiter(string prefix)
+        {
+            return new[] {string.Format("{0}{1}={2}", prefix, Name, Value)};
         }
     }
 }
