@@ -2,14 +2,16 @@
 
 namespace Chalk.Interop
 {
-    public class SwitchArgument : NamedArgument
+    public class SwitchArgument : IArgument
     {
+        public string Name { get; private set; }
+
         public SwitchArgument(string name)
-            : base(name, null)
         {
+            Name = name;
         }
 
-        public override IEnumerable<string> FormatCommandLine(string prefix, CommandLineArgumentStyle argumentStyle)
+        public IEnumerable<string> FormatCommandLine(string prefix, CommandLineArgumentStyle argumentStyle)
         {
             return new[] { prefix + Name };
         }

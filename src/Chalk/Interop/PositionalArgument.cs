@@ -2,11 +2,11 @@
 
 namespace Chalk.Interop
 {
-    public class PrimaryArgument : IFormattableArgument
+    public class PositionalArgument : IArgument
     {
         public string Value { get; private set; }
 
-        public PrimaryArgument(string value)
+        public PositionalArgument(string value)
         {
             Value = value;
         }

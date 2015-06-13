@@ -27,9 +27,9 @@ namespace Chalk.VaultExport.Interop
             vaultClient.ExecuteCommand(GetVersionCommand,
                 new[]
                 {
-                    new PrimaryArgument(version.ToString(CultureInfo.InvariantCulture)),
-                    new PrimaryArgument(repositoryPath), 
-                    new PrimaryArgument(workspacePath)
+                    new PositionalArgument(version.ToString(CultureInfo.InvariantCulture)),
+                    new PositionalArgument(repositoryPath), 
+                    new PositionalArgument(workspacePath)
                 },
                 CommandLineClientArgument.RepositoryName(repositoryName),
                 CommandLineClientArgument.BackupBeforeOverwriting(false),

@@ -73,9 +73,9 @@
     <Compile Include="GitImport\Interop\CommandLineClientBasedRepository.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Progress.cs" />
-    <Compile Include="Interop\PrimaryArgument.cs" />
+    <Compile Include="Interop\PositionalArgument.cs" />
     <Compile Include="VaultExport\Interop\CommandLineClientArgument.cs" />
-    <Compile Include="Interop\IFormattableArgument.cs" />
+    <Compile Include="Interop\IArgument.cs" />
     <Compile Include="VaultExport\Interop\VaultFacade.cs" />
     <Compile Include="Interop\NamedArgument.cs" />
     <Compile Include="Interop\SwitchArgument.cs" />

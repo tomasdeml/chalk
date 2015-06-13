@@ -26,7 +26,7 @@ namespace Chalk.VaultExport.Interop
         {
             var arguments = CreateArguments(repositoryName, beginAtVersion);
             var commandOutput = vaultClient.ExecuteCommand<VersionHistoryCommandOutput>(VersionHistoryCommand,
-                new PrimaryArgument(repositoryPath), arguments);
+                new PositionalArgument(repositoryPath), arguments);
 
             var historyItems =
                 commandOutput.HistoryItems.OrderBy(i => i.Version)

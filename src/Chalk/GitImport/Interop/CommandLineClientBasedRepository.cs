@@ -54,24 +54,24 @@ namespace Chalk.GitImport.Interop
         {
             gitClient.ExecuteCommand(ConfigCommand,
                 new SwitchArgument(LocalConfigSwitchArgument), new SwitchArgument(AddConfigSwitchArgument),
-                new PrimaryArgument(AutoCrLfConfigPath),
-                new PrimaryArgument(false.ToString().ToLowerInvariant()));
+                new PositionalArgument(AutoCrLfConfigPath),
+                new PositionalArgument(false.ToString().ToLowerInvariant()));
         }
 
         void ConfigureUserEmail(string userEmail)
         {
             gitClient.ExecuteCommand(ConfigCommand,
                 new SwitchArgument(LocalConfigSwitchArgument), new SwitchArgument(AddConfigSwitchArgument),
-                new PrimaryArgument(UserEmailConfigPath),
-                new PrimaryArgument(userEmail));
+                new PositionalArgument(UserEmailConfigPath),
+                new PositionalArgument(userEmail));
         }
 
         void ConfigureUserName(string userName)
         {
             gitClient.ExecuteCommand(ConfigCommand,
                 new SwitchArgument(LocalConfigSwitchArgument), new SwitchArgument(AddConfigSwitchArgument), 
-                new PrimaryArgument(UserNameConfigPath),
-                new PrimaryArgument(userName));
+                new PositionalArgument(UserNameConfigPath),
+                new PositionalArgument(userName));
         }
     }
 }

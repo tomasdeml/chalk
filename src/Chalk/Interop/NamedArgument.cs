@@ -3,7 +3,7 @@ using Seterlund.CodeGuard;
 
 namespace Chalk.Interop
 {
-    public class NamedArgument : IFormattableArgument
+    public class NamedArgument : IArgument
     {
         public string Name { get; private set; } 
         public string Value { get; private set; }

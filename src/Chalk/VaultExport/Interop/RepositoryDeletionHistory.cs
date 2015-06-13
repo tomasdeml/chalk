@@ -31,7 +31,7 @@ namespace Chalk.VaultExport.Interop
         {
             var arguments = CreateArguments(repositoryName, beginVersion, endVersion);
             var historyOutput = vaultClient.ExecuteCommand<HistoryCommandOutput>(HistoryCommand,
-                new PrimaryArgument(repositoryPath), arguments);
+                new PositionalArgument(repositoryPath), arguments);
 
             var transactionIds = new HashSet<int>(historyOutput.HistoryItems.Select(i => i.TransactionId));
             return new HashSet<int>(transactionIds);

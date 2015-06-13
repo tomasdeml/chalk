@@ -18,12 +18,12 @@ namespace Chalk.GitImport.Interop
             this.workingDirectory = workingDirectory;
         }
 
-        public void ExecuteCommand(string command, params IFormattableArgument[] arguments)
+        public void ExecuteCommand(string command, params IArgument[] arguments)
         {
             ExecuteCommand(command, null, arguments);
         }
 
-        public void ExecuteCommand(string command, string textForStandardInput, params IFormattableArgument[] arguments)
+        public void ExecuteCommand(string command, string textForStandardInput, params IArgument[] arguments)
         {
             var commandLineArguments = new List<string> {command};
             commandLineArguments.AddRange(

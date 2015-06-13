@@ -33,12 +33,12 @@ namespace Chalk.VaultExport.Interop
             this.commandLineClientPath = commandLineClientPath;
         }
 
-        public void ExecuteCommand(string command, IEnumerable<PrimaryArgument> primaryArguments, params NamedArgument[] additionalArguments)
+        public void ExecuteCommand(string command, IEnumerable<PositionalArgument> primaryArguments, params IArgument[] additionalArguments)
         {
             ExecuteCommandAndVerifyResult(command, primaryArguments, additionalArguments);
         }
 
-        ProcessResult ExecuteCommandAndVerifyResult(string command, IEnumerable<PrimaryArgument> primaryArguments, NamedArgument[] additionalArguments)
+        ProcessResult ExecuteCommandAndVerifyResult(string command, IEnumerable<PositionalArgument> primaryArguments, IArgument[] additionalArguments)
         {
             var commandResult = RunClientProcess(command, primaryArguments, additionalArguments);
             VerifyProcessResult(commandResult);
@@ -47,7 +47,7 @@ namespace Chalk.VaultExport.Interop
             return commandResult;
         }
 
-        public TOutput ExecuteCommand<TOutput>(string command, PrimaryArgument primaryArguments, params NamedArgument[] additionalArguments)
+        public TOutput ExecuteCommand<TOutput>(string command, PositionalArgument primaryArguments, params IArgument[] additionalArguments)
         {
             ProcessResult processResult = ExecuteCommandAndVerifyResult(command, new[] {primaryArguments}, additionalArguments);
 
@@ -76,7 +76,7 @@ namespace Chalk.VaultExport.Interop
                     processResult.ExitCode, processResult.AllOutput));
         }
 
-        ProcessResult RunClientProcess(string command, IEnumerable<PrimaryArgument> primaryArguments, IEnumerable<NamedArgument> additionalArguments)
+        ProcessResult RunClientProcess(string command, IEnumerable<PositionalArgument> primaryArguments, IArgument[] additionalArguments)
         {
             IEnumerable<string> allArguments = GetAllArguments(primaryArguments, additionalArguments);
  
@@ -87,11 +87,10 @@ namespace Chalk.VaultExport.Interop
             return Process.Run(clientProcessOptions);
         }
 
-        IEnumerable<string> GetAllArguments(IEnumerable<PrimaryArgument> primaryArguments, IEnumerable<NamedArgument> additionalArguments)
+        IEnumerable<string> GetAllArguments(IEnumerable<PositionalArgument> primaryArguments, IEnumerable<IArgument> additionalArguments)
         {
             return GetCommonArguments()
                 .Concat(additionalArguments)
-                .Cast<IFormattableArgument>()
                 .Concat(primaryArguments)
                 .SelectMany(a => a.FormatCommandLine(SingleDashArgumentPrefix, CommandLineArgumentStyle.Separated));
         }

@@ -12,7 +12,7 @@ namespace Chalk.Tests.Interop
         public void
             When_formatting_command_line_with_Separated_style_Then_it_should_return_Value_string_without_prefix()
         {
-            var sut = new PrimaryArgument("Value");
+            var sut = new PositionalArgument("Value");
             
             IEnumerable<string> commandLine = sut.FormatCommandLine("---", CommandLineArgumentStyle.Separated);
 
@@ -23,7 +23,7 @@ namespace Chalk.Tests.Interop
         public void
             When_formatting_command_line_with_Single_style_Then_it_should_return_Value_string_without_prefix()
         {
-            var sut = new PrimaryArgument("Value");
+            var sut = new PositionalArgument("Value");
             
             IEnumerable<string> commandLine = sut.FormatCommandLine("---", CommandLineArgumentStyle.SingleWithEqualsSignDelimiter);
 
