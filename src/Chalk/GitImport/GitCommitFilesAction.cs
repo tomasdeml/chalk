@@ -15,6 +15,7 @@ namespace Chalk.GitImport
         const string AllSwitchArgument = "all";
         const string CommitCommand = "commit";
         const string MessageSourceFileArgument = "file";
+        const string AllowEmptySwitchArgument = "allow-empty";
         const string AuthorArgument = "author";
         const string DateArgument = "date";
         const string UseStandardInputArgumentValue = "-";
@@ -56,8 +57,8 @@ namespace Chalk.GitImport
 
             gitClient.ExecuteCommand(CommitCommand, commitMessage,
                 new NamedArgument(MessageSourceFileArgument, UseStandardInputArgumentValue),
-                new NamedArgument(AuthorArgument, commitAuthor),
-                new NamedArgument(DateArgument, commitDate));
+                new NamedArgument(AuthorArgument, commitAuthor), new NamedArgument(DateArgument, commitDate),
+                new SwitchArgument(AllowEmptySwitchArgument));
         }
 
         string FormatCommitMessage(VersionHistoryItem historyItem)
