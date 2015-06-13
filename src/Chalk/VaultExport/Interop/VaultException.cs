@@ -6,11 +6,6 @@ namespace Chalk.VaultExport.Interop
     [Serializable]
     public class VaultException : Exception
     { 
-        // ReSharper disable once UnusedMember.Global
-        public VaultException()
-        {
-        }
-
         public VaultException(string message) : base(message)
         {
         }

@@ -23,7 +23,7 @@ namespace Chalk.Logging
                 return;
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("({0:0}%) ", progress.Value.Percentage);
+            Console.Write("({0}) ", progress.Value);
         }
 
         static void WriteMessage(string message, object[] messageArgs)

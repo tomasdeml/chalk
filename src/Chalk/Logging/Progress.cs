@@ -1,16 +1,16 @@
-﻿using Seterlund.CodeGuard;
+﻿using System.Globalization;
+using Seterlund.CodeGuard;
 
 namespace Chalk.Logging
 {
     public struct Progress
     {
-        public double Percentage { get; private set; }
+        readonly double percentage;
 
-        public Progress(double percentage)
-            : this()
+        public Progress(double percentage) : this()
         {
             Guard.That(percentage, "percentage").IsInRange(0, 100);
-            Percentage = percentage;
+            this.percentage = percentage;
         }
 
         public static Progress ForStep(int stepIndex, int totalNumberOfSteps)
@@ -36,6 +36,11 @@ namespace Chalk.Logging
         public static Progress Finished
         {
             get { return new Progress(100); }
+        }
+
+        public override string ToString()
+        {
+            return percentage.ToString("0", CultureInfo.CurrentCulture) + "%";
         }
     }
 }

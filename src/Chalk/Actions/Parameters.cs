@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using FluentValidation;
+using FluentValidation.Results;
 using PowerArgs;
 
 namespace Chalk.Actions
@@ -41,10 +45,57 @@ namespace Chalk.Actions
         [ArgShortcut("vrp")]
         public string VaultRepositoryPath { get; set; }
 
+        [ArgShortcut("aed")]
+        public string CommitAuthorEmailDomain { get; set; }
+
         [ArgShortcut("ddd")]
         public bool DisableRepositoryDeletionDetection { get; set; }
 
-        [ArgShortcut("aed")]
-        public string CommitAuthorEmailDomain { get; set; }
+        public void Validate()
+        {
+            var validationResult = GetValidator().Validate(this);
+            if (validationResult.IsValid)
+                return;
+
+            string message = CreateMessageForValidationErrors(validationResult.Errors); 
+            throw new ValidationException(message, validationResult.Errors);
+        }
+
+        static string CreateMessageForValidationErrors(IEnumerable<ValidationFailure> errors)
+        {
+            IEnumerable<string> messages = errors.Select(x => x.ErrorMessage);
+            return "Validation of one or more parameters failed: " + string.Join(",", messages);
+        }
+
+        IValidator<Parameters> GetValidator()
+        {
+            return Action == ActionKind.WorkspaceInit
+                ? (IValidator<Parameters>) new WorkspaceInitActionValidator()
+                : new VaultExportActionValidator();
+        }
+
+        abstract class RepositoryRelatedActionValidator : AbstractValidator<Parameters>
+        {
+            protected RepositoryRelatedActionValidator()
+            {
+                RuleFor(p => p.LocalWorkspacePath).NotEmpty();
+                RuleFor(p => p.CommitAuthorEmailDomain).NotEmpty();
+            }
+        }
+
+        class WorkspaceInitActionValidator : RepositoryRelatedActionValidator { }
+
+        class VaultExportActionValidator : RepositoryRelatedActionValidator
+        {
+            public VaultExportActionValidator()
+            {
+                RuleFor(p => p.VaultCommandLineClientPath).NotEmpty();
+                RuleFor(p => p.VaultHost).NotEmpty();
+                RuleFor(p => p.VaultUserName).NotEmpty();
+                RuleFor(p => p.VaultPassword).NotEmpty();
+                RuleFor(p => p.VaultRepositoryName).NotEmpty();
+                RuleFor(p => p.VaultRepositoryPath).NotEmpty();
+            }
+        }
     }
 }

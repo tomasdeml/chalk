@@ -21,7 +21,8 @@ namespace Chalk.Tests.Actions.ActionComposerSpecs
         {
             actionContext = new ActionContext(new Parameters
             {
-                LocalWorkspacePath = @"C:\Workspace" 
+                LocalWorkspacePath = @"C:\Workspace",
+                CommitAuthorEmailDomain = "example.org"
             }, Substitute.For<ILogger>());
         }
 

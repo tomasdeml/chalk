@@ -15,7 +15,7 @@ namespace Chalk.Interop
             Value = value;
         }
 
-        public virtual IEnumerable<string> FormatCommandLine(string prefix, CommandLineArgumentStyle argumentStyle)
+        public IEnumerable<string> FormatCommandLine(string prefix, CommandLineArgumentStyle argumentStyle)
         {
             return argumentStyle == CommandLineArgumentStyle.SingleWithEqualsSignDelimiter
                 ? FormatSingleCommandLineWithEqualsDelimiter(prefix)
@@ -30,6 +30,11 @@ namespace Chalk.Interop
         string[] FormatSingleCommandLineWithEqualsDelimiter(string prefix)
         {
             return new[] {string.Format("{0}{1}={2}", prefix, Name, Value)};
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} = {1}", Name, Value);
         }
     }
 }

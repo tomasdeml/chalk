@@ -13,6 +13,9 @@ namespace Chalk.Actions
         {
             Guard.That(parameters).IsNotNull();
             Guard.That(logger).IsNotNull(); 
+
+            parameters.Validate();
+
             Parameters = parameters;
             Logger = logger; 
         } 

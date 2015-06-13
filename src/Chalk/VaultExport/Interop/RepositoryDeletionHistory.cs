@@ -29,7 +29,7 @@ namespace Chalk.VaultExport.Interop
 
         public ISet<int> GetTransactionsContainingDeletions(int beginVersion, int endVersion)
         {
-            var arguments = CreateArguments(repositoryName, beginVersion, endVersion);
+            IArgument[] arguments = CreateArguments(repositoryName, beginVersion, endVersion);
             var historyOutput = vaultClient.ExecuteCommand<HistoryCommandOutput>(HistoryCommand,
                 new PositionalArgument(repositoryPath), arguments);
 
@@ -37,16 +37,14 @@ namespace Chalk.VaultExport.Interop
             return new HashSet<int>(transactionIds);
         }
 
-        static NamedArgument[] CreateArguments(string repositoryName, int beginVersion, int endVersion)
+        static IArgument[] CreateArguments(string repositoryName, int beginVersion, int endVersion)
         {
-            var parameters = new[]
-            {
+            return new IArgument[] {
                 CommandLineClientArgument.RepositoryName(repositoryName),
                 CommandLineClientArgument.BeginVersion(beginVersion),
                 CommandLineClientArgument.EndVersion(endVersion),
                 CommandLineClientArgument.IncludeActions(ActionsClassifiedAsDeletion)
             };
-            return parameters;
         }
 
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]

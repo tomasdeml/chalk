@@ -15,5 +15,10 @@ namespace Chalk.Interop
         {
             return new[] { prefix + Name };
         }
+
+        public override string ToString()
+        {
+            return "/" + Name;
+        }
     }
 }

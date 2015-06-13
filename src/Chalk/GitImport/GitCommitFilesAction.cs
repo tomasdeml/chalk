@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Text;
 using Chalk.Actions;
 using Chalk.Interop;
-using Chalk.VaultExport;
 using Chalk.VaultExport.Interop;
 using Seterlund.CodeGuard;
 using CommandLineClient = Chalk.GitImport.Interop.CommandLineClient;
@@ -19,6 +18,10 @@ namespace Chalk.GitImport
         const string AuthorArgument = "author";
         const string DateArgument = "date";
         const string UseStandardInputArgumentValue = "-";
+        const string CommitAuthorFormat = "{0} <{0}@{1}>";
+        const string Iso8601DateTimeFormat = "s";
+
+        const string VaultExportSourceNoteFormat = "(Exported from {0} at version {1})";
 
         readonly ActionContext context;
         readonly CommandLineClient gitClient;
@@ -69,18 +72,18 @@ namespace Chalk.GitImport
 
         string FormatExportSourceNote(VersionHistoryItem historyItem)
         {
-            return string.Format("(Exported from {0} at version {1})",
-                context.Parameters.VaultRepositoryPath, historyItem.Version);
+            return string.Format(VaultExportSourceNoteFormat, context.Parameters.VaultRepositoryPath,
+                historyItem.Version);
         }
 
         static string FormatDateForCommit(DateTime dateTime)
         {
-            return dateTime.ToString("s", CultureInfo.InvariantCulture);
+            return dateTime.ToString(Iso8601DateTimeFormat, CultureInfo.InvariantCulture);
         }
 
         static string FormatAuthorForCommit(string author, string authorEmailDomain)
         {
-            return string.Format("{0} <{0}@{1}>", author, authorEmailDomain);
+            return string.Format(CommitAuthorFormat, author, authorEmailDomain);
         }
     }
 }

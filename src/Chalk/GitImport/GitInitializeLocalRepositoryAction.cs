@@ -11,6 +11,7 @@ namespace Chalk.GitImport
 
         readonly ActionContext context;
         readonly IGitFacade gitFacade;
+        readonly string exporterEmail;
 
         public GitInitializeLocalRepositoryAction(ActionContext context, IGitFacade gitFacade)
         {
@@ -18,6 +19,7 @@ namespace Chalk.GitImport
             Guard.That(gitFacade).IsNotNull();
             this.context = context;
             this.gitFacade = gitFacade;
+            exporterEmail = string.Format("vault-exporter@{0}", context.Parameters.CommitAuthorEmailDomain);
         }
 
         public void Execute()
@@ -34,12 +36,7 @@ namespace Chalk.GitImport
             repository.Initialize();
 
             context.Logger.LogInfo(Progress.AlmostDone, "Configuring Git repository...");
-            repository.Configure(ExporterUserName, ExporterEmail);
-        }
-
-        string ExporterEmail
-        {
-            get { return string.Format("vault-exporter@{0}", context.Parameters.CommitAuthorEmailDomain); }
+            repository.Configure(ExporterUserName, exporterEmail);
         }
     }
 }

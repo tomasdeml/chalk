@@ -15,5 +15,10 @@ namespace Chalk.Interop
         {
             return new[] {Value};
         }
+
+        public override string ToString()
+        {
+            return Value;
+        }
     }
 }

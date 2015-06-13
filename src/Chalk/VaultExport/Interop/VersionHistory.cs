@@ -24,7 +24,7 @@ namespace Chalk.VaultExport.Interop
 
         public IEnumerable<VersionHistoryItem> Fetch(int? beginAtVersion)
         {
-            var arguments = CreateArguments(repositoryName, beginAtVersion);
+            IArgument[] arguments = CreateArguments(repositoryName, beginAtVersion);
             var commandOutput = vaultClient.ExecuteCommand<VersionHistoryCommandOutput>(VersionHistoryCommand,
                 new PositionalArgument(repositoryPath), arguments);
 
@@ -35,9 +35,9 @@ namespace Chalk.VaultExport.Interop
             return historyItems.ToArray();
         }
 
-        static NamedArgument[] CreateArguments(string repositoryName, int? beginAtVersion)
+        static IArgument[] CreateArguments(string repositoryName, int? beginAtVersion)
         {
-            return new[]
+            return new IArgument[]
             {
                 CommandLineClientArgument.RepositoryName(repositoryName),
                 beginAtVersion != null

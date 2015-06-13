@@ -5,17 +5,17 @@ using PowerArgs;
 
 namespace Chalk
 {
-    public class Program
+    public static class Program
     {
         public static void Main(params string[] args)
         {
-            ILogger logger = new ConsoleLoggerWithProgressIndicator();
+            ILogger logger = new ConsoleLoggerWithProgressIndicator(); 
 
             try
             {
                 var parameters = Args.Parse<Parameters>(args);
                 if (parameters == null)
-                    return;
+                    return; 
  
                 var context = new ActionContext(parameters, logger);
                 var action = new ActionComposer().Compose(parameters.Action, context); 

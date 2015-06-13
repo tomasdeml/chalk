@@ -68,10 +68,10 @@ namespace Chalk.Actions
         { 
             var vaultCredential = new NetworkCredential(context.Parameters.VaultUserName,
                 context.Parameters.VaultPassword);
-            var vaultClient = new VaultExport.Interop.CommandLineClient(context.Parameters.VaultCommandLineClientPath,
+            var vaultClient = new CommandLineClient(context.Parameters.VaultCommandLineClientPath,
                 context.Parameters.VaultHost, vaultCredential,
                 TimeSpan.FromSeconds(context.Parameters.VaultServerTimeOutInSeconds));
-            var vaultFactory = new VaultExport.Interop.VaultFacade(vaultClient);
+            var vaultFactory = new VaultFacade(vaultClient);
 
             var gitClient = new GitImport.Interop.CommandLineClient(context.Parameters.LocalWorkspacePath);
             var versionMarker = new FilePersistedLastVersionMarker(context.Parameters.LocalWorkspacePath, new FileSystem());
