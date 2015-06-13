@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using Chalk.Interop;
+using Chalk.Logging;
 using TwoPS.Processes;
 
 namespace Chalk.GitImport.Interop
@@ -12,10 +13,12 @@ namespace Chalk.GitImport.Interop
         const string DoubleDashArgumentPrefix = "--";
 
         readonly string workingDirectory;
+        readonly ILogger logger;
 
-        public CommandLineClient(string workingDirectory)
+        public CommandLineClient(string workingDirectory, ILogger logger)
         {
             this.workingDirectory = workingDirectory;
+            this.logger = logger;
         }
 
         public void ExecuteCommand(string command, params IArgument[] arguments)
@@ -25,20 +28,26 @@ namespace Chalk.GitImport.Interop
 
         public void ExecuteCommand(string command, string textForStandardInput, params IArgument[] arguments)
         {
+            IEnumerable<string> commandLineArguments = GetCommandLineArguments(command, arguments); 
+            Process gitProcess = NewGitProcess(commandLineArguments);
+
+            if (!string.IsNullOrWhiteSpace(textForStandardInput))
+                gitProcess.Options.StandardInputAppend(textForStandardInput);
+
+            gitProcess.ExecuteAndVerifyResult(logger);
+        }
+
+        static IEnumerable<string> GetCommandLineArguments(string command, IArgument[] arguments)
+        {
             var commandLineArguments = new List<string> {command};
             commandLineArguments.AddRange(
                 arguments.SelectMany(
                     a => a.FormatCommandLine(DoubleDashArgumentPrefix, CommandLineArgumentStyle.SingleWithEqualsSignDelimiter)));
 
-            Process process = NewProcess(commandLineArguments);
-
-            if (!string.IsNullOrWhiteSpace(textForStandardInput))
-                process.Options.StandardInputAppend(textForStandardInput);
-
-            process.ExecuteAndVerifyResult();
+            return commandLineArguments;
         }
 
-        Process NewProcess(IEnumerable<string> arguments)
+        Process NewGitProcess(IEnumerable<string> arguments)
         {
             return new Process(new ProcessOptions(GitExecutableFileName, arguments)
             {

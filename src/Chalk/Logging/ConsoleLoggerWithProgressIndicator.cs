@@ -4,6 +4,11 @@ namespace Chalk.Logging
 {
     class ConsoleLoggerWithProgressIndicator : ILogger
     {
+        public void LogDebug(string message, params object[] messageArgs)
+        {
+            // NOP
+        }
+
         public void LogInfo(string message, params object[] messageArgs)
         {
             LogInfo(null, message, messageArgs);
@@ -12,10 +17,13 @@ namespace Chalk.Logging
         public void LogInfo(Progress? progress, string message, params object[] messageArgs)
         {
             WriteProgressIndicator(progress); 
-            WriteMessage(message, messageArgs);
+            WriteMessage(message, messageArgs, ConsoleColor.White);
+        }
 
-            Console.ResetColor();
-        } 
+        public void LogWarning(string message, params object[] messageArgs)
+        {
+            WriteMessage(message, messageArgs, ConsoleColor.Yellow); 
+        }
 
         static void WriteProgressIndicator(Progress? progress)
         {
@@ -26,10 +34,11 @@ namespace Chalk.Logging
             Console.Write("({0}) ", progress.Value);
         }
 
-        static void WriteMessage(string message, object[] messageArgs)
+        static void WriteMessage(string message, object[] messageArgs, ConsoleColor foregroundColor)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(message, messageArgs);
+            Console.ForegroundColor = foregroundColor;
+            Console.WriteLine(message, messageArgs); 
+            Console.ResetColor();
         }
     }
 }

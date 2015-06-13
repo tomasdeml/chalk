@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interop\ResultExpectation.cs" />
     <Compile Include="Interop\CommandLineArgumentStyle.cs" />
     <Compile Include="Logging\ConsoleLoggerWithProgressIndicator.cs" />
     <Compile Include="GitImport\Interop\CommandLineClientFacade.cs" />

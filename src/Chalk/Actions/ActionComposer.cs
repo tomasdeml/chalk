@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Net;
 using Chalk.GitImport;
+using Chalk.GitImport.Interop;
 using Chalk.VaultExport;
 using Chalk.VaultExport.Interop;
 using Seterlund.CodeGuard;
+using CommandLineClient = Chalk.GitImport.Interop.CommandLineClient;
 
 namespace Chalk.Actions
 {
@@ -58,8 +60,8 @@ namespace Chalk.Actions
 
         static Action NewGitInitializeRepositoryAction(ActionContext context)
         { 
-            var gitCommandLineClient = new GitImport.Interop.CommandLineClient(context.Parameters.LocalWorkspacePath);
-            var gitFacade = new GitImport.Interop.CommandLineClientFacade(gitCommandLineClient, new FileSystem());
+            var gitClient = new CommandLineClient(context.Parameters.LocalWorkspacePath, context.Logger);
+            var gitFacade = new CommandLineClientFacade(gitClient, new FileSystem());
 
             return new GitInitializeLocalRepositoryAction(context, gitFacade).Execute;
         }
@@ -68,12 +70,12 @@ namespace Chalk.Actions
         { 
             var vaultCredential = new NetworkCredential(context.Parameters.VaultUserName,
                 context.Parameters.VaultPassword);
-            var vaultClient = new CommandLineClient(context.Parameters.VaultCommandLineClientPath,
+            var vaultClient = new VaultExport.Interop.CommandLineClient(context.Parameters.VaultCommandLineClientPath,
                 context.Parameters.VaultHost, vaultCredential,
                 TimeSpan.FromSeconds(context.Parameters.VaultServerTimeOutInSeconds));
             var vaultFactory = new VaultFacade(vaultClient);
 
-            var gitClient = new GitImport.Interop.CommandLineClient(context.Parameters.LocalWorkspacePath);
+            var gitClient = new CommandLineClient(context.Parameters.LocalWorkspacePath, context.Logger);
             var versionMarker = new FilePersistedLastVersionMarker(context.Parameters.LocalWorkspacePath, new FileSystem());
 
             Action<VersionHistoryItem> versionDownloadedAction =
