@@ -7,7 +7,5 @@ Chalk is not optimized for speed (yet) as it's primary use case is to export com
 ## Known issues
 - A commit with message containing double-quotes (") in Vault, will crash chalk - this is a bug in the Vault command line client that generates invalid XML (i.e. it does not escape quotes) when such message is present.
 
-**Beware - this is an alpha version**
-
 ## Licence
 Apache 2, see LICENCE.txt.
