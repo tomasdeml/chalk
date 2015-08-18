@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+
 using Chalk.Interop;
 using TwoPS.Processes;
 using YAXLib;
@@ -52,17 +55,48 @@ namespace Chalk.VaultExport.Interop
             ProcessResult processResult = ExecuteCommandAndVerifyResult(command, new[] {primaryArguments}, additionalArguments);
 
             var commandOutputSerializer = new YAXSerializer(typeof(TOutput), YAXExceptionHandlingPolicies.ThrowWarningsAndErrors);
-            var commandOutput = commandOutputSerializer.Deserialize(processResult.StandardOutput);
+            var validStandardOuputText = RemoveUnsupportedCharacters(processResult.StandardOutput);
+            var commandOutput = commandOutputSerializer.Deserialize(validStandardOuputText);
 
             return (TOutput)commandOutput;
         }
 
         static void VerifyClientCommandResult(ProcessResult processResult, string command)
         {
-            var commandResult = (CommandLineClientResult) CommandResultSerializer.Deserialize(processResult.StandardOutput);
+            var validStandardOuputText = RemoveUnsupportedCharacters(processResult.StandardOutput);
+
+            var commandResult = (CommandLineClientResult) CommandResultSerializer.Deserialize(validStandardOuputText);
 
             if (!commandResult.Success)
                 throw new VaultException(string.Format("Command {0} failed because: {1}.", command, commandResult.Error));
+        }
+
+        /// <summary>
+        /// Removes unsupported characters, such as quotation marks.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        static string RemoveUnsupportedCharacters(string text)
+        {
+            var resultBuilder = new StringBuilder(text.Length);
+
+            var regex = new Regex("comment=\"(.*)\" objverid=");
+            var matches = regex.Matches(text);
+
+            int lastProcessedIndex = 0;
+
+            foreach (Match match in matches)
+            {
+                var matchGroup1 = match.Groups[1];
+
+                resultBuilder.Append(text.Substring(lastProcessedIndex, matchGroup1.Index - lastProcessedIndex));
+                resultBuilder.Append(matchGroup1.Value.Replace("\"", "''"));
+                lastProcessedIndex = matchGroup1.Index + matchGroup1.Length;
+            }
+
+            resultBuilder.Append(text.Substring(lastProcessedIndex));
+
+            return resultBuilder.ToString();
         }
 
         static void VerifyProcessResult(ProcessResult processResult)
